@@ -18,11 +18,6 @@ module Alchemy
         default: false,
         desc: "Skip creation of demo element, page and application layout."
 
-      class_option :skip_webpacker_installer,
-        type: :boolean,
-        default: false,
-        desc: "Skip running the webpacker installer."
-
       class_option :skip_db_create,
         type: :boolean,
         default: false,
@@ -101,16 +96,6 @@ module Alchemy
 
       def install_gutentag_migrations
         rake "gutentag:install:migrations"
-      end
-
-      def run_webpacker_installer
-        unless options[:skip_webpacker_installer]
-          # Webpacker does not create a package.json, but we need one
-          unless File.exist? app_root.join("package.json")
-            in_root { run "echo '{}' > package.json" }
-          end
-          rake("webpacker:install", abort_on_failure: true)
-        end
       end
 
       def add_npm_package
