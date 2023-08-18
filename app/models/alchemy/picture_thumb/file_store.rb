@@ -25,7 +25,13 @@ module Alchemy
         # so we need to build the path on our own.
         def server_path(uid)
           dragonfly_app = ::Dragonfly.app(:alchemy_pictures)
-          "#{dragonfly_app.datastore&.server_root || ''}/#{uid}"
+          path = ''
+
+          if dragonfly_app.datastore.respond_to? :server_root
+            path = dragonfly_app.datastore.server_root 
+          end
+
+          "#{path}/#{uid}"
         end
       end
     end
